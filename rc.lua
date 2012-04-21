@@ -1,4 +1,5 @@
 -- Standard awesome library
+-- {{{ Libraries
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
@@ -6,11 +7,18 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+
 require("vicious")
-awful.util.spawn_with_shell("xcompmgr -cF &")
+---}}}
+
+-- awful.util.spawn_with_shell("xcompmgr -cF &")
+
+-- local home = os.getenv("HOME")
+local configdir = awful.util.getdir("config")
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/home/n2i/.config/awesome/themes/zenburn/theme.lua")
+beautiful.init(configdir .. "/zenburn/zenburn.lua")
+-- beautiful.init(home .. "/.config/awesome/zenburn/zenburn.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "uxterm"
@@ -68,27 +76,10 @@ tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     tags[s] = awful.tag({ '1 ⎈⚫', '2 ✎⚫', '3 ☏⚫', '4 ⇵⚫', '5 ⎆⚫',  '6 ⛃⚫', '7 ♫⚫', '8 ✵‡' }, s, layouts[2])
-    -- tags[s] = awful.tag({ '¹-main|', '²-coding|', '³-im|', '⁴-web|', '⁵-reading',  '⁶-fileman|', '⁷-♪|', '⁸-other ||' }, s, layouts[4])
 end
 -- }}}
 
 -- {{{ Menu
--- Create a laucher widget and a main menu
--- myawesomemenu = {
---   { "manual", terminal .. " -e man awesome" },
---   { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
---   { "restart", awesome.restart },
---   { "quit", awesome.quit }
--- }
-
--- mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
---                                    { "terminal", terminal }
---                                  }
---                        })
-
--- mylauncher = awful.widget.launcher({ image = image(beautiful.n2i_icon),
---                                     menu = mymainmenu })
--- }}}
 
 shutdownmenu = {
 	{ "shutdown", shutdowncmd },
@@ -124,87 +115,84 @@ mymainmenu = awful.menu({ items = { { "terminal", terminal },
                                     { "fileman", fm_menu },
                                     { "browsers", browsers_menu },
 									{ "utils", utils_menu }, 
-									{ "system", shutdownmenu, beautiful.system_icon }
+									{ "system", shutdownmenu, beautiful.widget_st }
                                   }
                         })
 
-n2ilauncher = awful.widget.launcher({ image = image(beautiful.n2i_icon), menu = mymainmenu })
+-- }}}
+
+
+-- {{{ Menu Launcher
+n2ilauncher = awful.widget.launcher({ image = image(beautiful.n2i), menu = mymainmenu })
+-- }}
+
 
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" }, "%a %b %d, %H:%M", 60)
 
--- clockicon = widget({ type = "imagebox" })
--- clockicon.image = image("/home/n2i/.config/awesome/icons/time.png")
 
 separator = widget({ type = "textbox" })
-separator.text  = ":-:"
 separator.margin = "center"
-separator.border_color = "blue"
-
-separator1 = widget({ type = "textbox" })
-separator1.text  = " ‡ "
--- separator1.text  = " || "
+separator.text  = " ‡ "
+-- separator.text  = " || "
 
 space = widget({ type = "textbox" })
 space.text = " :-: "
 
+-- n2i icon
 n2iicon = widget({ type = "imagebox" })
-n2iicon.image = image("/home/n2i/.config/awesome/n2i.png")
--- Filesystem widget
--- fstext = widget({ type = "textbox" })
--- fstext.text = "+FS: "
+n2iicon.image = image(beautiful.n2i)
+
+-- {{{ Filesystem widget
 
 fswidget = widget({ type = "textbox" })
 vicious.register(fswidget, vicious.widgets.fs, " /: [${/ used_gb}|${/ size_gb}]GB - /home: [${/home used_gb}|${/home size_gb}]GB", 300)
 
 diskicon = widget({ type = "imagebox" })
-diskicon.image = image("/home/n2i/.config/awesome/icons/disk.png")
+diskicon.image = image(beautiful.widget_fs)
 -- fshomewidget = widget({ type = "textbox" })
 -- vicious.register(fshomewidget, vicious.widgets.fs, "", 180)
 
--- Mem Widget
+
+--{{{ Mem Widget
 memwidget = widget({ type = "textbox" })
 vicious.cache(vicious.widgets.mem)
 vicious.register(memwidget, vicious.widgets.mem, " $1% [$2|$3]MB", 10)
+
 memicon = widget({ type = "imagebox" })
-memicon.image = image("/home/n2i/.config/awesome/icons/mem.png")
--- CPU
+memicon.image = image(beautiful.widget_mem)
+--}}}
+
+
+-- {{{ CPU
 cpuwidget = widget({ type = "textbox" })
 vicious.register(cpuwidget, vicious.widgets.cpu, " [$2%] [$3%]")
 
 cpuicon = widget({ type = "imagebox" })
-cpuicon.image = image("/home/n2i/.config/awesome/icons/cpu.png")
-
+cpuicon.image = image(beautiful.widget_cpu)
+--}}}
 -- cpuinfo = widget({ type = "textbox" })
 -- vicious.register(cpuinfo, vicious.widgets.cpuinf, "cpu: ${cpu mhz}MHz")
 -- OS
 -- oswidget = widget({ type = "textbox"})
 -- vicious.register(oswidget,vicious.widgets.os, "System: $1 $3 ")
--- Disk I/O
+
+
+--{{{ Disk I/O
 diowidget = widget ({ type = "textbox"})
 vicious.register(diowidget, vicious.widgets.dio, "sda I/O: [${sda write_kb}|${sda read_kb}]Kb" )
--- Uptime
+--}}}
+
+
+--{{{ Uptime
 uptime = widget ({ type = "textbox" })
 vicious.register(uptime, vicious.widgets.uptime, " $2:$3' :-: $4 $5 $6", 10)
 
 uptimeicon = widget({ type = "imagebox" })
-uptimeicon.image = image("/home/n2i/.config/awesome/icons/power.png")
+uptimeicon.image = image(beautiful.widget_st)
+--}}}
 
--- MPD info
---mpdicon = widget({ type = "textbox" })
---mpdinfo = widget ({ type = "textbox" })
---vicious.register(mpdinfo, vicious.widgets.mpd,
--- function (widget, args)
---    if args["{state}"] == "Stop" then
---      mpdicon.bg_image = nil
---      mpdicon.width = 0
---      return ""
---    else
---      mpdicon.bg_image = image(beautiful.mpd_icon)
---      return "mpd: " .. args["{Artist}"] .. ' - ' .. args["{Title}"]
---    end
--- end)
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -276,21 +264,21 @@ for s = 1, screen.count() do
         {
             n2ilauncher,
             --n2iicon,
-            separator1,
+            separator,
             mytaglist[s],
             mypromptbox[s],
             -- separator,
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
-        separator1, mytextclock, -- clockicon,
-        separator1,
+        separator, mytextclock, -- clockicon,
+        separator,
         s == 1 and mysystray or nil,
-        separator1, fswidget, diskicon,
-        separator1, memwidget, memicon,
-        separator1, cpuwidget, cpuicon,
-        separator1, uptime, uptimeicon,
-        separator1, diowidget, separator1, -- oswidget,
+        separator, fswidget, diskicon,
+        separator, memwidget, memicon,
+        separator, cpuwidget, cpuicon,
+        separator, uptime, uptimeicon,
+        separator, diowidget, separator, -- oswidget,
     --    mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -497,4 +485,4 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 -- }}}
 -- os.execute("volumeicon &")
 -- os.execute("sleep 5 && nm-applet &")
-os.execute("sleep 10 && ibus-daemon &")
+-- os.execute("sleep 10 && ibus-daemon &")
