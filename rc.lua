@@ -483,6 +483,6 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
--- os.execute("volumeicon &")
+os.execute("sleep 3 && volumeicon &")
 -- os.execute("sleep 5 && nm-applet &")
--- os.execute("sleep 10 && ibus-daemon &")
+os.execute("sleep 10 && ibus-daemon &")
