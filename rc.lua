@@ -11,7 +11,7 @@ require("naughty")
 require("vicious")
 ---}}}
 
--- awful.util.spawn_with_shell("xcompmgr -cF &")
+awful.util.spawn_with_shell("xcompmgr -cF &")
 
 -- local home = os.getenv("HOME")
 local configdir = awful.util.getdir("config")
