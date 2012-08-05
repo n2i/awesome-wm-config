@@ -4,4 +4,8 @@ awesome-wm-config
 Awesome WM configurations
 
 This is my Awesome WM configurations.
-The icons is not my own, I just modified something.
+Requirement:
+[1] vicious (http://awesome.naquadah.org/wiki/Vicious)
+
+Recommend:
+[1] volumeicon (http://softwarebakery.com/maato/volumeicon.html)

@@ -6,53 +6,52 @@ require("awful.rules")
 -- Theme handling library
 require("beautiful")
 -- Notification library
-require("naughty")
+-- require("naughty")
 
 require("vicious")
 ---}}}
-
-awful.util.spawn_with_shell("xcompmgr -cF &")
+-- {{{ Something
+awful.util.spawn_with_shell("xcompmgr -cFo 0.90 &")
+-- awful.util.spawn_with_shell("transset -a 0.90 &")
 
 -- local home = os.getenv("HOME")
 local configdir = awful.util.getdir("config")
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init(configdir .. "/zenburn/zenburn.lua")
--- beautiful.init(home .. "/.config/awesome/zenburn/zenburn.lua")
-
+-- }}}
 -- This is used later as the default terminal and editor to run.
 -- terminal = "uxterm"
-terminal = "urxvt"
-editor = os.getenv("EDITOR") or "vim"
+terminal   = "urxvt"
+editor     = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+-- }}}
 
--- Scrot:
-
-scrot_cmd = "scrot -q 80 '%Y-%m-%d-%H-%M-%S-$wx$h.png' -e 'mv $f ~/Pictures/scrot/'"
-scrot_hq = "scrot -q 100 '%Y-%m-%d-%H-%M-%S-$wx$h.png' -e 'mv $f ~/Pictures/scrot/'"
+-- Scrot:--{{{
+scrot_cmd   = "scrot -q 80 '%Y-%m-%d-%H-%M-%S-$wx$h.png' -e 'mv $f ~/Pictures/scrot/'"
+scrot_hq    = "scrot -q 100 '%Y-%m-%d-%H-%M-%S-$wx$h.png' -e 'mv $f ~/Pictures/scrot/'"
 scrot_delay = "scrot -d 3 -q 80 '%Y-%m-%d-%H-%M-%S-$wx$h.png' -e 'mv $f ~/Pictures/scrot/'"
-
--- System menu items
+--}}}
+-- System menu items--{{{
 
 shutdowncmd = "sudo shutdown -hP now"
 restartcmd = "sudo reboot"
+--}}}
+-- FM menu items--{{{
+ranger = terminal .. "-e ranger"
+--}}}
+-- Browser menu items--{{{
+elinks = terminal .. "-e elinks"
+--}}}
 
--- FM menu items
-
-ranger = "uxterm -e ranger"
-
--- Browser menu items
-
-elinks = "uxterm -e elinks"
-
--- Default modkey.
+-- {{{ Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
-
--- Table of layouts to cover with awful.layout.inc, order matters.
+-- }}}
+-- {{{ Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
     awful.layout.suit.floating,
@@ -60,10 +59,10 @@ layouts =
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+  -- awful.layout.suit.fair,
+  -- awful.layout.suit.fair.horizontal,
+  --  awful.layout.suit.spiral,
+  --  awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier
@@ -75,101 +74,99 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ '1 ⎈⚫', '2 ✎⚫', '3 ☏⚫', '4 ⇵⚫', '5 ⎆⚫',  '6 ⛃⚫', '7 ♫⚫', '8 ✵‡' }, s, layouts[2])
+    tags[s] = awful.tag({ '1 ⎈⚫', '2 ✎⚫', '3 ☏⚫', '4 ⇵⚫', '5 ⎆⚫',  '6 ⛃⚫', '7 ♫⚫', '8 ✵‡' }, s, layouts[1])
 end
 -- }}}
 
--- {{{ Menu
-
+--{{{ Menu
+--{{{ Session Menu
 shutdownmenu = {
 	{ "shutdown", shutdowncmd },
 	{ "reboot", restartcmd },
 	{ "logout", awesome.quit }
-}
-
+}--}}}
+--{{{ File Managers Menu
 fm_menu = {
     { "pcmanfm", "pcmanfm" },
-    { "thunar", "thunar" },
-    { "nautilus", "nautilus" },
     { "ranger", ranger }
 }
-
+--}}}
+--{{{ Browsers Menu
 browsers_menu = {
     { "firefox", "firefox" },
-    { "chromium", "chromium" },
-    { "chrome", "google-chrome" },
     { "elinks", elinks }
 }
-
+--}}}
+--{{{ Utils Menu
 utils_menu = {
-	{ "ibus", "ibus-daemon" },
+	{ "os-keyboard", "matchbox-keyboard" },
 	{ "shutter", "shutter" }
 }
-
+--}}}
+--{{{ Editors Menu
 editors = {
-	{ "emacs", "emacs" }, 
+	{ "emacs", "emacs" },
 	{ "gvim", "gvim" }
-}
+}--}}}
+--{{{ Main Menu
 mymainmenu = awful.menu({ items = { { "terminal", terminal },
-									{ "editors", editors }, 
+									                  { "editors", editors },
                                     { "fileman", fm_menu },
                                     { "browsers", browsers_menu },
-									{ "utils", utils_menu }, 
-									{ "system", shutdownmenu, beautiful.widget_st }
+									                  { "utils", utils_menu },
+									                  { "system", shutdownmenu, beautiful.widget_st }
                                   }
                         })
-
--- }}}
-
+--}}}
+--}}}
 
 -- {{{ Menu Launcher
 n2ilauncher = awful.widget.launcher({ image = image(beautiful.n2i), menu = mymainmenu })
--- }}
-
+-- }}}
 
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" }, "%a %b %d, %H:%M", 60)
 
 
-separator = widget({ type = "textbox" })
+separator        = widget({ type = "textbox" })
 separator.margin = "center"
-separator.text  = " ‡ "
+separator.text   = " ‡ "
 -- separator.text  = " || "
 
-space = widget({ type = "textbox" })
+space      = widget({ type = "textbox" })
 space.text = " :-: "
 
 -- n2i icon
-n2iicon = widget({ type = "imagebox" })
+n2iicon       = widget({ type = "imagebox" })
 n2iicon.image = image(beautiful.n2i)
 
 -- {{{ Filesystem widget
 
-fswidget = widget({ type = "textbox" })
+fswidget       = widget({ type = "textbox" })
 vicious.register(fswidget, vicious.widgets.fs, " /: [${/ used_gb}|${/ size_gb}]GB - /home: [${/home used_gb}|${/home size_gb}]GB", 300)
 
-diskicon = widget({ type = "imagebox" })
+diskicon       = widget({ type = "imagebox" })
 diskicon.image = image(beautiful.widget_fs)
 -- fshomewidget = widget({ type = "textbox" })
 -- vicious.register(fshomewidget, vicious.widgets.fs, "", 180)
-
+-- }}}
 
 --{{{ Mem Widget
-memwidget = widget({ type = "textbox" })
+memwidget     = widget({ type = "textbox" })
 vicious.cache(vicious.widgets.mem)
 vicious.register(memwidget, vicious.widgets.mem, " $1% [$2|$3]MB", 10)
 
-memicon = widget({ type = "imagebox" })
+memicon       = widget({ type = "imagebox" })
 memicon.image = image(beautiful.widget_mem)
 --}}}
 
 
 -- {{{ CPU
-cpuwidget = widget({ type = "textbox" })
+cpuwidget     = widget({ type = "textbox" })
 vicious.register(cpuwidget, vicious.widgets.cpu, " [$2%] [$3%]")
 
-cpuicon = widget({ type = "imagebox" })
+cpuicon       = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
 --}}}
 -- cpuinfo = widget({ type = "textbox" })
@@ -180,20 +177,50 @@ cpuicon.image = image(beautiful.widget_cpu)
 
 
 --{{{ Disk I/O
-diowidget = widget ({ type = "textbox"})
+diowidget = widget ({ type = "textbox" })
+vicious.cache(vicious.widgets.dio)
 vicious.register(diowidget, vicious.widgets.dio, "sda I/O: [${sda write_kb}|${sda read_kb}]Kb" )
 --}}}
 
 
 --{{{ Uptime
-uptime = widget ({ type = "textbox" })
+uptime           = widget ({ type = "textbox" })
 vicious.register(uptime, vicious.widgets.uptime, " $2:$3' :-: $4 $5 $6", 10)
 
-uptimeicon = widget({ type = "imagebox" })
+uptimeicon       = widget({ type = "imagebox" })
 uptimeicon.image = image(beautiful.widget_st)
 --}}}
 
+--{{{ Volume
+--volwidget = awful.widget.graph()
+--volwidget:set_width(40)
+--volwidget:set_height(10)
+-- volwidget:set_vertical(true)
+--volwidget:set_background_color("#ffffff")
+--volwidget:set_border_color(nil)
+--volwidget:set_color("#FBF091")
+--volwidget:set_max_value(100)
+--volwidget:set_gradient_colors({ "#AECF96", "#88A175", "#FF5656" })
+volwidget     = widget ({ type = "textbox" })
+vicious.register(volwidget, vicious.widgets.volume, " $1% $2", 31, "Master")
 
+
+volicon       = widget({ type = "imagebox" })
+volicon.image = image(beautiful.widget_vol)
+--}}}
+--{{{ MPD
+mpdwidget = widget({ type = "textbox"})
+vicious.register(mpdwidget, vicious.widgets.mpd,
+  function (widget, args)
+    if args["{state"] == "Stop" then return ""
+    else return ' MPD: '..
+      args["{Artist}"]..' - '.. args["{Title}"]..' '    -- body
+    end
+  end)
+
+musicicon       = widget({ type = "imagebox" })
+musicicon.image = image(beautiful.widget_mpd)
+--}}}
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
@@ -202,7 +229,7 @@ mywibox = {}
 -- wibox_bot = {}
 mypromptbox = {}
 mylayoutbox = {}
-mytaglist = {}
+mytaglist   = {}
 mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
@@ -257,7 +284,7 @@ for s = 1, screen.count() do
     --                                     end, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s, opacity = 1 })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, opacity = 0.80, height = 12 })
 --    wibox_bot[s] = awful.wibox({ position = "bottom", screen = s, height = 12 })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
@@ -274,10 +301,12 @@ for s = 1, screen.count() do
         separator, mytextclock, -- clockicon,
         separator,
         s == 1 and mysystray or nil,
-        separator, fswidget, diskicon,
+    --    separator, fswidget, diskicon,
+        separator, volwidget, volicon,
         separator, memwidget, memicon,
         separator, cpuwidget, cpuicon,
         separator, uptime, uptimeicon,
+        separator, mpdwidget, musicicon,
         separator, diowidget, separator, -- oswidget,
     --    mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -348,7 +377,7 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey }, "x",
               function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
+                  awful.prompt.run({ prompt = "lua: " },
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
@@ -432,6 +461,8 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "File Operation Progress" },
       properties = { floating = true } },
+    { rule = { class = "Gimp" },
+      properties = { floating = true } },
     { rule = { class = "Dialog" },
       properties = { floating = true } },
     { rule = { class = "Lxappearance" },
@@ -483,6 +514,8 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-os.execute("sleep 3 && volumeicon &")
+----{{{ OS execute apps
+-- os.execute("sleep 3 && volumeicon &")
 -- os.execute("sleep 5 && nm-applet &")
-os.execute("sleep 10 && ibus-daemon &")
+-- os.execute("sleep 10 && ibus-daemon -r &")
+----}}}
