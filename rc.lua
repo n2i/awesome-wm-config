@@ -1,4 +1,3 @@
--- Standard awesome library
 -- {{{ Libraries
 require("awful")
 require("awful.autofocus")
@@ -35,7 +34,7 @@ scrot_delay = "scrot -d 3 -q 80 '%Y-%m-%d-%H-%M-%S-$wx$h.png' -e 'mv $f ~/Pictur
 -- System menu items--{{{
 
 shutdowncmd = "sudo shutdown -hP now"
-restartcmd = "sudo reboot"
+restartcmd  = "sudo reboot"
 --}}}
 -- FM menu items--{{{
 ranger = terminal .. "-e ranger"
@@ -81,10 +80,11 @@ end
 --{{{ Menu
 --{{{ Session Menu
 shutdownmenu = {
-	{ "shutdown", shutdowncmd },
-	{ "reboot", restartcmd },
-	{ "logout", awesome.quit }
-}--}}}
+  	{ "shutdown", shutdowncmd },
+    { "reboot", restartcmd },
+    { "logout", awesome.quit }
+}
+--}}}
 --{{{ File Managers Menu
 fm_menu = {
     { "pcmanfm", "pcmanfm" },
@@ -99,15 +99,16 @@ browsers_menu = {
 --}}}
 --{{{ Utils Menu
 utils_menu = {
-	{ "os-keyboard", "matchbox-keyboard" },
-	{ "shutter", "shutter" }
+    { "os-keyboard", "matchbox-keyboard" },
+    { "shutter", "shutter" }
 }
 --}}}
 --{{{ Editors Menu
 editors = {
-	{ "emacs", "emacs" },
-	{ "gvim", "gvim" }
-}--}}}
+    { "emacs", "emacs" },
+    { "gvim", "gvim" }
+}
+--}}}
 --{{{ Main Menu
 mymainmenu = awful.menu({ items = { { "terminal", terminal },
 									                  { "editors", editors },
@@ -225,8 +226,7 @@ musicicon.image = image(beautiful.widget_mpd)
 mysystray = widget({ type = "systray" })
 
 -- Create a wibox for each screen and add it
-mywibox = {}
--- wibox_bot = {}
+mywibox     = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist   = {}
@@ -284,7 +284,7 @@ for s = 1, screen.count() do
     --                                     end, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s, opacity = 0.80, height = 12 })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, opacity = 0.80, height = 12, cursor = "ComixCursors-Black-Small" })
 --    wibox_bot[s] = awful.wibox({ position = "bottom", screen = s, height = 12 })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
@@ -470,17 +470,19 @@ awful.rules.rules = {
     { rule = { class = "xterm" },
       properties = { floating = true, opacity = 0.8 } },
     { rule = { class = "Gvim" },
-      properties = { tag = tags[1][2], switchtotag = true, opacity = 0.9 } },
+      properties = { tag = tags[1][2], switchtotag = true } },
     { rule = { class = "Firefox" },
-      properties = { tag = tags[1][4], switchtotag = true } },
+      properties = { tag = tags[1][4], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
+    { rule = { name = ".Sublime Text 2." },
+      properties = { tag = tags[1][6], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
     { rule = { class = "Pidgin" },
       properties = { tag = tags[1][3], opacity = 0.9 } },
     { rule = { class = "Audacious" },
-      properties = { tag = tags[1][7] } },
-	{ rule = { class = "Emacs" },
-	  properties = { tag = tags[1][2], switchtotag = true } },
-	{ rule = { class = "Evince" },
-	  properties = { tag = tags[1][5], switchtotag = true } }
+      properties = { tag = tags[1][7], opacity = 0.8 } },
+    { rule = { class = "Emacs" },
+      properties = { tag = tags[1][2], switchtotag = true } },
+    { rule = { class = "Evince" },
+      properties = { tag = tags[1][5], switchtotag = true } }
 }
 -- }}}
 
@@ -517,5 +519,5 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 ----{{{ OS execute apps
 -- os.execute("sleep 3 && volumeicon &")
 -- os.execute("sleep 5 && nm-applet &")
--- os.execute("sleep 10 && ibus-daemon -r &")
+os.execute("sleep 10 && ibus-daemon -r &")
 ----}}}
