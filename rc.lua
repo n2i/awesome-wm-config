@@ -474,7 +474,7 @@ awful.rules.rules = {
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][4], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
     { rule = { name = ".Sublime Text 2." },
-      properties = { tag = tags[1][6], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
+      properties = { tag = tags[1][3], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
     { rule = { class = "Pidgin" },
       properties = { tag = tags[1][3], opacity = 0.9 } },
     { rule = { class = "Audacious" },
@@ -521,3 +521,4 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 -- os.execute("sleep 5 && nm-applet &")
 os.execute("sleep 10 && ibus-daemon -r &")
 ----}}}
+-- vim: set ff=unix ft=lua fenc=utf-8 ts=4 sw=4 tw=78 fdm=marker :
