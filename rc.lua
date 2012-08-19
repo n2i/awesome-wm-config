@@ -10,7 +10,7 @@ require("beautiful")
 require("vicious")
 ---}}}
 -- {{{ Something
-awful.util.spawn_with_shell("xcompmgr -cFo 0.90 &")
+awful.util.spawn_with_shell("xcompmgr -cF &")
 -- awful.util.spawn_with_shell("transset -a 0.90 &")
 
 -- local home = os.getenv("HOME")
@@ -472,7 +472,8 @@ awful.rules.rules = {
     { rule = { class = "Gvim" },
       properties = { tag = tags[1][2], switchtotag = true } },
     { rule = { class = "Firefox" },
-      properties = { tag = tags[1][4], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
+      properties = { tag = tags[1][4], switchtotag = true, opacity = 0.9 } },
+    --  properties = { tag = tags[1][4], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
     { rule = { name = ".Sublime Text 2." },
       properties = { tag = tags[1][3], switchtotag = true, maximized_vertical = true, maximized_horizontal = true, opacity = 0.9 } },
     { rule = { class = "Pidgin" },
